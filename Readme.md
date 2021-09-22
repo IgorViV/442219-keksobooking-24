@@ -1,7 +1,7 @@
 # Личный проект «Кексобукинг»
 
 * Студент: [Игорь Влащенко](https://up.htmlacademy.ru/javascript/24/user/442219).
-* Наставник: `Неизвестно`.
+* Наставник: [Антон Попов](https://htmlacademy.ru/profile/joker).
 
 ---
 
