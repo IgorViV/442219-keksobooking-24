@@ -159,3 +159,4 @@ const createOffers = () => {
   };
 };
 const arrGeneratedOffers = Array.from({length: SIMILAR_OFFER_COUNT}, createOffers);
+arrGeneratedOffers;
