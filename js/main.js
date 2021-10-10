@@ -96,27 +96,18 @@ const PHOTO_URL = [
   'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/brandon-hoogenboom-SNxQGWxZQi0.jpg',
   'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/claire-rendall-b6kAwr1i0Iw.jpg',
 ];
-const COUNT_ROOMS = {
-  min: 1,
-  max: 5,
-};
-const COUNT_QUESTS = {
-  min: 1,
-  max: 5,
-};
-const PRICE_VALUE = {
-  min: 10,
-  max: 1000,
-};
-const LATITIDE = {
-  min: 35.65000,
-  max: 35.70000,
-};
-const LONGITUDE = {
-  min: 139.70000,
-  max: 139.80000,
-};
+const COUNT_ROOMS_MIN = 1;
+const COUNT_ROOMS_MAX = 5;
+const COUNT_QUESTS_MIN = 1;
+const COUNT_QUESTS_MAX = 5;
+const PRICE_VALUE_MIN = 0;
+const PRICE_VALUE_MAX = 1000000;
+const LATITIDE_MIN = 35.65000;
+const LATITIDE_MAX = 35.70000;
+const LONGITUDE_MIN = 139.70000;
+const LONGITUDE_MAX = 139.80000;
 const SIMILAR_OFFER_COUNT = 10;
+const DIGITS = 5;
 
 const getRandomArrayElement = (array) => array[getRandomInteger(0, array.length - 1)];
 
@@ -131,8 +122,8 @@ const getRandomElementDontRepeat = (array) => {
 const getArrayRandomLength = (array) => array.slice(getRandomInteger(1, array.length - 1));
 
 const createOffers = () => {
-  const randomLat = getRandomFloat(LATITIDE.min, LATITIDE.max, 5);
-  const randomLng = getRandomFloat(LONGITUDE.min, LONGITUDE.max, 5);
+  const randomLat = getRandomFloat(LATITIDE_MIN, LATITIDE_MAX, DIGITS);
+  const randomLng = getRandomFloat(LONGITUDE_MIN, LONGITUDE_MAX, DIGITS);
   const randomIndexPhoto = getRandomElementDontRepeat(INDEX_PHOTO);
 
   return {
@@ -142,10 +133,10 @@ const createOffers = () => {
     offer: {
       title: getRandomArrayElement(TITLES),
       address: `${randomLat}, ${randomLng}`,
-      price: getRandomInteger(PRICE_VALUE.min, PRICE_VALUE.max),
+      price: getRandomInteger(PRICE_VALUE_MIN, PRICE_VALUE_MAX),
       type: getRandomArrayElement(TYPES),
-      rooms: getRandomInteger(COUNT_ROOMS.min, COUNT_ROOMS.max),
-      guests: getRandomInteger(COUNT_QUESTS.min, COUNT_QUESTS.max),
+      rooms: getRandomInteger(COUNT_ROOMS_MIN, COUNT_ROOMS_MAX),
+      guests: getRandomInteger(COUNT_QUESTS_MIN, COUNT_QUESTS_MAX),
       checkin: getRandomArrayElement(CHECK_TIME),
       checkout: getRandomArrayElement(CHECK_TIME),
       features: getArrayRandomLength(FEATURES),
