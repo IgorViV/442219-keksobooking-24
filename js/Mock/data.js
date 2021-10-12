@@ -14,18 +14,6 @@ const TYPES = [
   'bungalow',
   'hotel',
 ];
-const INDEX_PHOTO = [
-  '01',
-  '02',
-  '03',
-  '04',
-  '05',
-  '06',
-  '07',
-  '08',
-  '09',
-  '10',
-];
 const CHECK_TIME = [
   '12:00',
   '13:00',
@@ -51,22 +39,56 @@ const PHOTO_URL = [
   'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/brandon-hoogenboom-SNxQGWxZQi0.jpg',
   'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/claire-rendall-b6kAwr1i0Iw.jpg',
 ];
-const COUNT_ROOMS_MIN = 1;
-const COUNT_ROOMS_MAX = 5;
-const COUNT_QUESTS_MIN = 1;
-const COUNT_QUESTS_MAX = 5;
-const PRICE_VALUE_MIN = 0;
-const PRICE_VALUE_MAX = 1000000;
-const LATITIDE_MIN = 35.65000;
-const LATITIDE_MAX = 35.70000;
-const LONGITUDE_MIN = 139.70000;
-const LONGITUDE_MAX = 139.80000;
+const CountRooms = {
+  MIN: 1,
+  MAX: 5,
+};
+const CountQuests = {
+  MIN: 1,
+  MAX: 5,
+};
+const PriceValue = {
+  MIN: 0,
+  MAX: 1000000,
+};
+const Latitide = {
+  MIN: 35.65000,
+  MAX: 35.70000,
+};
+const Longitude = {
+  MIN: 139.70000,
+  MAX: 139.80000,
+};
 const SIMILAR_OFFER_COUNT = 10;
 const DIGITS = 5;
 
-const createOffers = () => {
-  const randomLat = getRandomFloat(LATITIDE_MIN, LATITIDE_MAX, DIGITS);
-  const randomLng = getRandomFloat(LONGITUDE_MIN, LONGITUDE_MAX, DIGITS);
+/**
+ * Возвращает массив индексов фотографий
+ *
+ * @param {Integer} maxCount Число фотографий
+ * @returns {Array} Массив индексов фотографий
+ */
+const createIndexPhoto = (maxCount) => {
+  const arrayIndex = [];
+  for (let i = 1; i <= maxCount; i++) {
+    let index = `0${i}`;
+    if (i === maxCount) {
+      index = `${i}`;
+    }
+    arrayIndex.push(index);
+  }
+  return arrayIndex;
+};
+const INDEX_PHOTO = createIndexPhoto(SIMILAR_OFFER_COUNT);
+
+/**
+ * Возвращает сгенерируемое объявление
+ *
+ * @returns {Object} Объявление со случайными данными
+ */
+const createOffer = () => {
+  const randomLat = getRandomFloat(Latitide.MIN, Latitide.MAX, DIGITS);
+  const randomLng = getRandomFloat(Longitude.MIN, Longitude.MAX, DIGITS);
   const randomIndexPhoto = getRandomElementDontRepeat(INDEX_PHOTO);
 
   return {
@@ -76,10 +98,10 @@ const createOffers = () => {
     offer: {
       title: getRandomArrayElement(TITLES),
       address: `${randomLat}, ${randomLng}`,
-      price: getRandomInteger(PRICE_VALUE_MIN, PRICE_VALUE_MAX),
+      price: getRandomInteger(PriceValue.MIN, PriceValue.MAX),
       type: getRandomArrayElement(TYPES),
-      rooms: getRandomInteger(COUNT_ROOMS_MIN, COUNT_ROOMS_MAX),
-      guests: getRandomInteger(COUNT_QUESTS_MIN, COUNT_QUESTS_MAX),
+      rooms: getRandomInteger(CountRooms.MIN, CountRooms.MAX),
+      guests: getRandomInteger(CountQuests.MIN, CountQuests.MAX),
       checkin: getRandomArrayElement(CHECK_TIME),
       checkout: getRandomArrayElement(CHECK_TIME),
       features: getArrayRandomLength(FEATURES),
@@ -92,6 +114,6 @@ const createOffers = () => {
     },
   };
 };
-const arrGeneratedOffers = Array.from({length: SIMILAR_OFFER_COUNT}, createOffers);
+const arrGeneratedOffers = Array.from({length: SIMILAR_OFFER_COUNT}, createOffer);
 
 export {arrGeneratedOffers};
