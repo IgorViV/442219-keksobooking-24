@@ -114,6 +114,6 @@ const createOffer = () => {
     },
   };
 };
-const arrGeneratedOffers = Array.from({length: SIMILAR_OFFER_COUNT}, createOffer);
+const createOffers = () => Array.from({length: SIMILAR_OFFER_COUNT}, createOffer);
 
-export {arrGeneratedOffers};
+export {createOffers};
