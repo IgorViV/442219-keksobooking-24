@@ -3,15 +3,24 @@
  *
  * @param {String} classForm CSS класс формы
  */
-const disabledForm = (classForm) => {
+const deactivateForm = (classForm) => {
   const currentForm = document.querySelector(`.${classForm}`);
   const fieldsets = currentForm.querySelectorAll('fieldset');
   currentForm.classList.add(`${classForm}--disabled`);
   fieldsets.forEach((fieldset) => fieldset.setAttribute('disabled', 'disabled'));
 };
 
-disabledForm('ad-form');
-disabledForm('map__filters');
+const activateForm = (classForm) => {
+  const currentForm = document.querySelector(`.${classForm}`);
+  const fieldsets = currentForm.querySelectorAll('fieldset');
+  currentForm.classList.remove(`${classForm}--disabled`);
+  fieldsets.forEach((fieldset) => fieldset.removeAttribute('disabled'));
+};
+
+deactivateForm('ad-form');
+deactivateForm('map__filters');
+activateForm('ad-form');
+activateForm('map__filters');
 
 // TODO 3. Напишите функцию, которая будет переводить страницу в активное состояние. В задании про карту мы будем вызывать эту функцию, когда карта будет загружена и готова к работе, а пока вы можете просто вызвать эту функцию активации в своём коде.
 
