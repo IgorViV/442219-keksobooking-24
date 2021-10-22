@@ -1,4 +1,4 @@
-import {getRandomInteger, getRandomFloat, getRandomArrayElement, getRandomElementDontRepeat, getArrayRandomLength} from './util.js';
+import {getRandomInteger, getRandomFloat, getRandomArrayElement, getRandomElementDontRepeat, getArrayRandomLength} from './util-mock.js';
 
 const TITLES = [
   'Заголовок объявления 1',
@@ -86,7 +86,7 @@ const INDEX_PHOTO = createIndexPhoto(SIMILAR_OFFER_COUNT);
  *
  * @returns {Object} Объявление со случайными данными
  */
-const createOffer = () => {
+const createAdvertisement = () => {
   const randomLat = getRandomFloat(Latitide.MIN, Latitide.MAX, DIGITS);
   const randomLng = getRandomFloat(Longitude.MIN, Longitude.MAX, DIGITS);
   const randomIndexPhoto = getRandomElementDontRepeat(INDEX_PHOTO);
@@ -114,6 +114,6 @@ const createOffer = () => {
     },
   };
 };
-const arrGeneratedOffers = Array.from({length: SIMILAR_OFFER_COUNT}, createOffer);
+const createAdvertisements = () => Array.from({length: SIMILAR_OFFER_COUNT}, createAdvertisement);
 
-export {arrGeneratedOffers};
+export {createAdvertisements};

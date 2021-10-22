@@ -1,2 +1,3 @@
-import {arrGeneratedOffers} from './Mock/data.js';
-arrGeneratedOffers;
+import './mock/data-mock.js';
+import './utils.js';
+import './rendering.js';
