@@ -1,4 +1,10 @@
-import './mock/data-mock.js';
+import {createAdvertisements} from './mock/data-mock.js';
 import './utils.js';
-import './rendering.js';
-import './form.js';
+import {fillCardData} from './rendering.js';
+import {deactivateForm, activateForm} from './form.js';
+
+document.querySelector('#map-canvas').appendChild(fillCardData(createAdvertisements()[0]));
+deactivateForm('map__filters');
+deactivateForm('ad-form');
+activateForm('map__filters');
+activateForm('ad-form');

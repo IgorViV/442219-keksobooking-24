@@ -31,7 +31,4 @@ const activateForm = (classForm) => {
   });
 };
 
-deactivateForm('ad-form');
-deactivateForm('map__filters');
-activateForm('ad-form');
-activateForm('map__filters');
+export {deactivateForm, activateForm};

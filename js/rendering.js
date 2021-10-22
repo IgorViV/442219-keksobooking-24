@@ -1,8 +1,5 @@
-import {createAdvertisements} from './mock/data-mock.js';
 import {getNounPlularForm} from './utils.js';
 
-const advertisements = createAdvertisements();
-const mapConvas = document.querySelector('#map-canvas');
 const typeAlias = {
   palace: 'Дворец',
   flat: 'Квартира',
@@ -84,4 +81,4 @@ const fillCardData = (data) => {
   return fragment;
 };
 
-mapConvas.appendChild(fillCardData(advertisements[0]));
+export {fillCardData};
