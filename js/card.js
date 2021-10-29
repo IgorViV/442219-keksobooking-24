@@ -60,14 +60,12 @@ const renderCard = (data) => {
   if (offer.photos) {
     const popupPhotos = card.querySelector('.popup__photos');
     const imageTemplate = popupPhotos.querySelector('img');
-    const imageFragment = document.createDocumentFragment();
     popupPhotos.innerHTML = '';
     offer.photos.forEach((photo) => {
       const image = imageTemplate.cloneNode(true);
       image.setAttribute('src', photo);
-      imageFragment.appendChild(image);
+      popupPhotos.appendChild(image);
     });
-    popupPhotos.appendChild(imageFragment);
   } else {
     card.querySelector('.popup__photos').innerHTML = '';
   }
