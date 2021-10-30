@@ -1,8 +1,5 @@
-import {createAdvertisements} from './mock/data-mock.js';
 import {getNounPlularForm} from './utils.js';
 
-const advertisements = createAdvertisements();
-const mapConvas = document.querySelector('#map-canvas');
 const typeAlias = {
   palace: 'Дворец',
   flat: 'Квартира',
@@ -10,6 +7,9 @@ const typeAlias = {
   bungalow: 'Бунгало',
   hotel: 'Отель',
 };
+const templateCard = document.querySelector('#card')
+  .content
+  .querySelector('.popup');
 
 /**
  * Формирует список доступных удобств в объявлении
@@ -35,24 +35,16 @@ const createListFeatures = (cloneTemplate, offerFeatures) => {
  * @param {Object} data Данные объявленния
  * @returns Fragment с заполненными полями карточки
  */
-const fillCardData = (data) => {
-  const templateCard = document.querySelector('#card')
-    .content
-    .querySelector('.popup');
+const renderCard = (data) => {
   const card = templateCard.cloneNode(true);
-  const fragment = document.createDocumentFragment();
   const {author, offer} = data;
 
-  if (author.avatar) {
-    card.querySelector('.popup__avatar').setAttribute('src', author.avatar);
-  } else {
-    card.querySelector('.popup__avatar').setAttribute('src', 'img/avatars/default.png');
-  }
+  card.querySelector('.popup__avatar').setAttribute('src', author.avatar ? author.avatar : 'img/avatars/default.png');
 
-  (offer.title) ? card.querySelector('.popup__title').textContent = offer.title : card.querySelector('.popup__title').textContent = '';
-  (offer.address) ? card.querySelector('.popup__text--address').textContent = offer.address : card.querySelector('.popup__text--address').textContent = '';
-  (offer.price) ? card.querySelector('.popup__text--price').textContent = `${offer.price} ₽/ночь` : card.querySelector('.popup__text--price').textContent = '';
-  (offer.type) ? card.querySelector('.popup__type').textContent = typeAlias[offer.type] : card.querySelector('.popup__type').textContent = '';
+  card.querySelector('.popup__title').textContent = offer.title ? offer.title : '';
+  card.querySelector('.popup__text--address').textContent = offer.address ? offer.address : '';
+  card.querySelector('.popup__text--price').textContent = offer.price ? `${offer.price} ₽/ночь` : '';
+  card.querySelector('.popup__type').textContent = offer.type ? typeAlias[offer.type] : '';
   if (offer.rooms && offer.guests) {
     card.querySelector('.popup__text--capacity').textContent = `${offer.rooms} ${getNounPlularForm(offer.rooms, 'комната', 'комнаты', 'комнат')} для ${offer.guests} ${getNounPlularForm(offer.guests, 'гостя', 'гостей', 'гостей')}`;
   } else if (offer.rooms) {
@@ -61,27 +53,24 @@ const fillCardData = (data) => {
     card.querySelector('.popup__text--capacity').textContent = '';
   }
 
-  (offer.description) ? card.querySelector('.popup__description').textContent = offer.description : card.querySelector('.popup__description').textContent = '';
+  card.querySelector('.popup__description').textContent = offer.description ? offer.description : '';
 
   createListFeatures(card, offer.features);
 
   if (offer.photos) {
     const popupPhotos = card.querySelector('.popup__photos');
     const imageTemplate = popupPhotos.querySelector('img');
-    const imageFragment = document.createDocumentFragment();
     popupPhotos.innerHTML = '';
     offer.photos.forEach((photo) => {
       const image = imageTemplate.cloneNode(true);
       image.setAttribute('src', photo);
-      imageFragment.appendChild(image);
+      popupPhotos.appendChild(image);
     });
-    popupPhotos.appendChild(imageFragment);
   } else {
     card.querySelector('.popup__photos').innerHTML = '';
   }
 
-  fragment.appendChild(card);
-  return fragment;
+  document.querySelector('#map-canvas').appendChild(card);
 };
 
-mapConvas.appendChild(fillCardData(advertisements[0]));
+export {renderCard};
