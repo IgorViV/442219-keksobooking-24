@@ -4,7 +4,7 @@ import {renderCard} from './card.js';
 import {deactivateForm, activateForm} from './form-activating.js';
 import {validateForm} from './form-validation.js';
 
-document.querySelector('#map-canvas').appendChild(renderCard(createAdvertisements()[0]));
+renderCard(createAdvertisements()[0]);
 deactivateForm('map__filters');
 deactivateForm('ad-form');
 activateForm('map__filters');
