@@ -5,6 +5,18 @@ const minCostRooms = {
   bungalow: 0,
   hotel: 3000,
 };
+const roomsVsGuest = {
+  '100': ['0'],
+  '1': ['1'],
+  '2': ['1', '2'],
+  '3': ['1', '2', '3'],
+};
+const guestsMessage = {
+  '100': 'Для 100 комнат укажите "не для гостей"',
+  '1': 'Для 1 комнаты укажите "для 1 гостя"',
+  '2': 'Для 2 комнат укажите "для 1 гостя" или "для 2 гостей"',
+  '3': 'Для 3 комнат укажите "для 1 гостя", "для 2 гостей" или "для 3 гостей"',
+};
 const adForm = document.querySelector('.ad-form');
 const inputPrice = adForm.querySelector('#price');
 const roomNumber = adForm.querySelector('#room_number');
@@ -18,17 +30,8 @@ const capacity = adForm.querySelector('#capacity');
  * @returns {String} Если соответствует - пустая строка, иначе сообщение об ошибке
  */
 const matchRoomAndGuest = (valueRoom, valueGuest) => {
-  if (valueRoom === '100' && valueGuest !== '0') {
-    return 'Для 100 комнат укажите "не для гостей"';
-  }
-  if (valueRoom === '1' && valueGuest !== '1') {
-    return 'Для 1 комнаты укажите "для 1 гостя"';
-  }
-  if (valueRoom === '2' && (valueGuest !== '1' && valueGuest !== '2')) {
-    return 'Для 2 комнат укажите "для 1 гостя" или "для 2 гостей"';
-  }
-  if (valueRoom === '3' && valueGuest === '0') {
-    return 'Для 3 комнат укажите "для 1 гостя", "для 2 гостей" или "для 3 гостей"';
+  if (!roomsVsGuest[valueRoom].includes(valueGuest)) {
+    return guestsMessage[valueRoom];
   }
   return '';
 };
