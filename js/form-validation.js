@@ -21,9 +21,11 @@ const adForm = document.querySelector('.ad-form');
 const inputPrice = adForm.querySelector('#price');
 const roomNumber = adForm.querySelector('#room_number');
 const capacity = adForm.querySelector('#capacity');
+const timeIn = adForm.querySelector('#timein');
+const timeOut = adForm.querySelector('#timeout');
 
 /**
- * Выполняет валидацию количества комнат и голией
+ * Выполняет валидацию количества комнат и гостей
  */
 const validateRoomNumber = () => {
   roomNumber.addEventListener('change', (evt) => {
@@ -35,7 +37,6 @@ const validateRoomNumber = () => {
     }
     evt.target.reportValidity();
   });
-
   capacity.addEventListener('change', (evt) => {
     if (!roomsVsGuest[roomNumber.value].includes(evt.target.value)) {
       evt.target.setCustomValidity(guestsMessage[roomNumber.value]);
@@ -45,6 +46,24 @@ const validateRoomNumber = () => {
     }
     evt.target.reportValidity();
   });
+};
+
+/**
+ * Выполняет изменение времени заезда/выезда в зависимости от изменения времени выезда/заезда
+ *
+ * @param {Object} evt Изменяемый select времени
+ */
+const changeTime = (evt) => {
+  const selectedTimeIn = timeIn.querySelector('option[selected]');
+  const selectedTimeOut = timeOut.querySelector('option[selected]');
+  if (selectedTimeOut.value !== evt.target.value) {
+    selectedTimeOut.removeAttribute('selected');
+    timeOut.querySelector(`option[value="${evt.target.value}"]`).setAttribute('selected', 'selected');
+  }
+  if (selectedTimeIn.value !== evt.target.value) {
+    selectedTimeIn.removeAttribute('selected');
+    timeIn.querySelector(`option[value="${evt.target.value}"]`).setAttribute('selected', 'selected');
+  }
 };
 
 /**
@@ -70,14 +89,18 @@ const validateForm = () => {
     }
     evt.target.reportValidity();
   });
-
   adForm.addEventListener('change', (evt) => {
     if (evt.target.matches('select[name="type"]')) {
       inputPrice.setAttribute('min', minCostRooms[evt.target.value]);
       inputPrice.setAttribute('placeholder', minCostRooms[evt.target.value]);
     }
+    if (evt.target.matches('select[name="timein"]')) {
+      changeTime(evt);
+    }
+    if (evt.target.matches('select[name="timeout"]')) {
+      changeTime(evt);
+    }
   });
-
   validateRoomNumber();
 };
 
