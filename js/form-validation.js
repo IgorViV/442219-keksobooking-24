@@ -23,26 +23,12 @@ const roomNumber = adForm.querySelector('#room_number');
 const capacity = adForm.querySelector('#capacity');
 
 /**
- * Выполняет проверку соответствия количества комнат и количества гостей
- *
- * @param {String} valueRoom Выбранное количество комнат
- * @param {String} valueGuest Выбранное количество гостей
- * @returns {String} Если соответствует - пустая строка, иначе сообщение об ошибке
- */
-const matchRoomAndGuest = (valueRoom, valueGuest) => {
-  if (!roomsVsGuest[valueRoom].includes(valueGuest)) {
-    return guestsMessage[valueRoom];
-  }
-  return '';
-};
-
-/**
  * Выполняет валидацию количества комнат и голией
  */
 const validateRoomNumber = () => {
   roomNumber.addEventListener('change', (evt) => {
-    if (matchRoomAndGuest(evt.target.value, capacity.value)) {
-      evt.target.setCustomValidity(matchRoomAndGuest(evt.target.value, capacity.value));
+    if (!roomsVsGuest[evt.target.value].includes(capacity.value)) {
+      evt.target.setCustomValidity(guestsMessage[evt.target.value]);
     } else {
       evt.target.setCustomValidity('');
       capacity.setCustomValidity('');
@@ -51,8 +37,8 @@ const validateRoomNumber = () => {
   });
 
   capacity.addEventListener('change', (evt) => {
-    if (matchRoomAndGuest(roomNumber.value, evt.target.value)) {
-      evt.target.setCustomValidity(matchRoomAndGuest(roomNumber.value, evt.target.value));
+    if (!roomsVsGuest[roomNumber.value].includes(evt.target.value)) {
+      evt.target.setCustomValidity(guestsMessage[roomNumber.value]);
     } else {
       evt.target.setCustomValidity('');
       roomNumber.setCustomValidity('');
