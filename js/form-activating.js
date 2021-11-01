@@ -6,9 +6,7 @@
 const deactivateForm = (classForm) => {
   const currentForm = document.querySelector(`.${classForm}`);
   const fieldsets = currentForm.querySelectorAll('fieldset');
-  if (!currentForm.classList.contains(`${classForm}--disabled`)) {
-    currentForm.classList.add(`${classForm}--disabled`);
-  }
+  currentForm.classList.add(`${classForm}--disabled`);
   fieldsets.forEach((fieldset) => fieldset.setAttribute('disabled', 'disabled'));
 };
 
@@ -20,9 +18,7 @@ const deactivateForm = (classForm) => {
 const activateForm = (classForm) => {
   const currentForm = document.querySelector(`.${classForm}`);
   const fieldsets = currentForm.querySelectorAll('fieldset');
-  if (currentForm.classList.contains(`${classForm}--disabled`)) {
-    currentForm.classList.remove(`${classForm}--disabled`);
-  }
+  currentForm.classList.remove(`${classForm}--disabled`);
 
   fieldsets.forEach((fieldset) => {
     if (fieldset.hasAttribute('disabled')) {
