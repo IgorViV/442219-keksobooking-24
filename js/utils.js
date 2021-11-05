@@ -1,3 +1,9 @@
+const DefaultSetMap = {
+  LAT: 35.6895,
+  LNG: 139.692,
+  SCALE: 10,
+};
+
 /**
  * Возвращает корректную форму множественного числа (только для целых чисел)
  *
@@ -26,4 +32,4 @@ const getNounPlularForm = (currentNumber, oneString, twoString, manyString) => {
   }
 };
 
-export {getNounPlularForm};
+export {getNounPlularForm, DefaultSetMap};
