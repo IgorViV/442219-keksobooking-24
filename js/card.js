@@ -70,7 +70,7 @@ const renderCard = (data) => {
     card.querySelector('.popup__photos').innerHTML = '';
   }
 
-  document.querySelector('#map-canvas').appendChild(card);
+  return card;
 };
 
 export {renderCard};
