@@ -4,6 +4,16 @@ const DefaultSetMap = {
   SCALE: 10,
 };
 
+const SetPinMainMarker = {
+  SIZE: [52, 52],
+  PEAK: [26, 52],
+};
+
+const SetPinOrdinaryMarker = {
+  SIZE: [40, 40],
+  PEAK: [20, 40],
+};
+
 /**
  * Возвращает корректную форму множественного числа (только для целых чисел)
  *
@@ -32,4 +42,4 @@ const getNounPlularForm = (currentNumber, oneString, twoString, manyString) => {
   }
 };
 
-export {getNounPlularForm, DefaultSetMap};
+export {getNounPlularForm, DefaultSetMap, SetPinMainMarker, SetPinOrdinaryMarker};

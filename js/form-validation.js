@@ -69,7 +69,7 @@ const changeTime = (evt) => {
 /**
  * Выполняет валидацию формы
  */
-const validateForm = () => {
+const addHandleresToForm = () => {
   adForm.addEventListener('input', (evt) => {
     if (evt.target.matches('input[name="title"]')) {
       if (evt.target.validity.tooShort) {
@@ -104,4 +104,4 @@ const validateForm = () => {
   validateRoomNumber();
 };
 
-export {validateForm};
+export {addHandleresToForm};
