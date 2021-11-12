@@ -1,3 +1,6 @@
+import {sendData} from './api.js';
+import {resetMarker} from './map.js';
+
 const minCostRooms = {
   palace: 10000,
   flat: 1000,
@@ -18,11 +21,42 @@ const guestsMessage = {
   '3': 'Для 3 комнат укажите "для 1 гостя", "для 2 гостей" или "для 3 гостей"',
 };
 const adForm = document.querySelector('.ad-form');
+const mapFilters = document.querySelector('.map__filters');
 const inputPrice = adForm.querySelector('#price');
 const roomNumber = adForm.querySelector('#room_number');
 const capacity = adForm.querySelector('#capacity');
 const timeIn = adForm.querySelector('#timein');
 const timeOut = adForm.querySelector('#timeout');
+const buttonReset = adForm.querySelector('.ad-form__reset');
+
+/**
+ * Деактивирует форму
+ *
+ * @param {String} classForm CSS класс формы
+ */
+const deactivateForm = (classForm) => {
+  const currentForm = document.querySelector(`.${classForm}`);
+  const fieldsets = currentForm.querySelectorAll('fieldset');
+  currentForm.classList.add(`${classForm}--disabled`);
+  fieldsets.forEach((fieldset) => fieldset.setAttribute('disabled', 'disabled'));
+};
+
+/**
+ * Активирует форму
+ *
+ * @param {String} classForm CSS класс формы
+ */
+const activateForm = (classForm) => {
+  const currentForm = document.querySelector(`.${classForm}`);
+  const fieldsets = currentForm.querySelectorAll('fieldset');
+  currentForm.classList.remove(`${classForm}--disabled`);
+
+  fieldsets.forEach((fieldset) => {
+    if (fieldset.hasAttribute('disabled')) {
+      fieldset.removeAttribute('disabled');
+    }
+  });
+};
 
 /**
  * Выполняет валидацию количества комнат и гостей
@@ -67,9 +101,9 @@ const changeTime = (evt) => {
 };
 
 /**
- * Выполняет валидацию формы
+ * Устанавливает обработчики полей для валидации формы
  */
-const addHandleresToForm = () => {
+const setHandleresForm = () => {
   adForm.addEventListener('input', (evt) => {
     if (evt.target.matches('input[name="title"]')) {
       if (evt.target.validity.tooShort) {
@@ -104,4 +138,41 @@ const addHandleresToForm = () => {
   validateRoomNumber();
 };
 
-export {addHandleresToForm};
+/**
+ * Выполняет сброс формы и фильтра
+ */
+const resetForms = () => {
+  adForm.reset();
+  mapFilters.reset();
+};
+
+/**
+ * Устанвливает обработчик submit для основной формы
+ *
+ * @param {Function} onSucces Действия при успешной отправке объявления
+ * @param {Function} onError Действия при ошибке отправки объявления
+ */
+const setSubmitForm = (onSucces, onError) => {
+  adForm.addEventListener('submit', (evt) => {
+    evt.preventDefault();
+
+    sendData(
+      () => {
+        onSucces();
+        resetForms();
+        resetMarker();
+      },
+      () => onError(),
+      new FormData(evt.target),
+    );
+  });
+};
+
+buttonReset.addEventListener('click', (evt) => {
+  evt.preventDefault();
+  adForm.reset();
+  mapFilters.reset();
+  resetMarker();
+});
+
+export {deactivateForm, activateForm, setHandleresForm, setSubmitForm};

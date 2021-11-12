@@ -1,9 +1,11 @@
-import {createAdvertisements} from './mock/data-mock.js';
-import {deactivateForm} from './form-activating.js';
-import {showAdvertisementsToMap} from './map.js';
-import {addHandleresToForm} from './form-validation.js';
+import {getData} from './api.js';
+import {loadMap, renderAdvertisementsPin} from './map.js';
+import {showPopupErrorGetData, showPopupErrorSendForm, showPopupSuccessSendForm} from './popup.js';
+import {deactivateForm, setHandleresForm, setSubmitForm} from './form.js';
 
 deactivateForm('map__filters');
 deactivateForm('ad-form');
-showAdvertisementsToMap(createAdvertisements());
-addHandleresToForm();
+loadMap();
+getData(renderAdvertisementsPin, showPopupErrorGetData);
+setHandleresForm();
+setSubmitForm(showPopupSuccessSendForm, showPopupErrorSendForm);

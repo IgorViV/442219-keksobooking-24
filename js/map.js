@@ -1,21 +1,39 @@
 import {DefaultSetMap, SetPinMainMarker, SetPinOrdinaryMarker} from './utils.js';
 import {renderCard} from './card.js';
-import {activateForm} from './form-activating.js';
+import {activateForm} from './form.js';
+
+const adForm = document.querySelector('.ad-form');
+const inputAddress = adForm.querySelector('#address');
+const map = L.map('map-canvas');
+const mainPinIcon = L.icon({
+  iconUrl: SetPinMainMarker.URL,
+  iconSize: SetPinMainMarker.SIZE,
+  iconAnchor: SetPinMainMarker.PEAK,
+});
+const mainPinMarker = L.marker(
+  {
+    lat: DefaultSetMap.LAT,
+    lng: DefaultSetMap.LNG,
+  },
+  {
+    draggable: true,
+    icon: mainPinIcon,
+  },
+);
+const ordinaryPinIcon = L.icon({
+  iconUrl: SetPinOrdinaryMarker.URL,
+  iconSize: SetPinOrdinaryMarker.SIZE,
+  iconAnchor: SetPinOrdinaryMarker.PEAK,
+});
 
 /**
- * Отображает карту с маркерами объявлений
- *
- * @param {Object} points Данные из объявления
+ * Отображает карту
  */
-const showAdvertisementsToMap = (advertisements) => {
-  const adForm = document.querySelector('.ad-form');
-  const inputAddress = adForm.querySelector('#address');
-  const map = L.map('map-canvas')
-    .on('load', () => {
-      activateForm('ad-form');
-      activateForm('map__filters');
-      inputAddress.value = `${DefaultSetMap.LAT}, ${DefaultSetMap.LNG}`;
-    })
+const loadMap = () => {
+  map.on('load', () => {
+    activateForm('ad-form');
+    inputAddress.value = `${DefaultSetMap.LAT}, ${DefaultSetMap.LNG}`;
+  })
     .setView({
       lat: DefaultSetMap.LAT,
       lng: DefaultSetMap.LNG,
@@ -28,47 +46,31 @@ const showAdvertisementsToMap = (advertisements) => {
     },
   ).addTo(map);
 
-  const mainPinIcon = L.icon({
-    iconUrl: './img/main-pin.svg',
-    iconSize: SetPinMainMarker.SIZE,
-    iconAnchor: SetPinMainMarker.PEAK,
-  });
-
-  const ordinaryPinIcon = L.icon({
-    iconUrl: './img/pin.svg',
-    iconSize: SetPinOrdinaryMarker.SIZE,
-    iconAnchor: SetPinOrdinaryMarker.PEAK,
-  });
-
-  const mainPinMarker = L.marker(
-    {
-      lat: DefaultSetMap.LAT,
-      lng: DefaultSetMap.LNG,
-    },
-    {
-      draggable: true,
-      icon: mainPinIcon,
-    },
-  );
-
   mainPinMarker.addTo(map);
 
   mainPinMarker.on('move', (evt) => {
     inputAddress.value = `${evt.target.getLatLng().lat.toFixed(5)}, ${evt.target.getLatLng().lng.toFixed(5)}`;
   });
+};
 
+/**
+ * Отображает маркеры объявлений на карте
+ *
+ * @param {Object} advertisements Данные из объявлений
+ */
+const renderAdvertisementsPin = (advertisements) => {
   const markerGroup = L.layerGroup().addTo(map);
 
   /**
-   * Отображает маркер объявления на карте
+   * Отрисовывает маркер объявления
    *
-   * @param {Object} point Данные из объявления
+   * @param {Object} advertisement Данные из объявления
    */
-  const createMarker = (point) => {
+  const createMarker = (advertisement) => {
     const marker = L.marker(
       {
-        lat: point.location.lat,
-        lng: point.location.lng,
+        lat: advertisement.location.lat,
+        lng: advertisement.location.lng,
       },
       {
         icon: ordinaryPinIcon,
@@ -77,12 +79,22 @@ const showAdvertisementsToMap = (advertisements) => {
 
     marker
       .addTo(markerGroup)
-      .bindPopup(renderCard(point));
+      .bindPopup(renderCard(advertisement));
   };
 
   advertisements.forEach((advertisement) => {
     createMarker(advertisement);
   });
+  activateForm('map__filters');
 };
 
-export {showAdvertisementsToMap};
+const resetMarker = () => {
+  mainPinMarker.setLatLng({
+    lat: DefaultSetMap.LAT,
+    lng: DefaultSetMap.LNG,
+  });
+  inputAddress.value = `${DefaultSetMap.LAT}, ${DefaultSetMap.LNG}`;
+  map.closePopup();
+};
+
+export {loadMap, renderAdvertisementsPin, resetMarker};
