@@ -1,6 +1,7 @@
 import {DefaultSetMap, SetPinMainMarker, SetPinOrdinaryMarker} from './utils.js';
 import {renderCard} from './card.js';
 import {activateForm} from './form.js';
+import {filterAdvertisements} from './filter.js';
 
 const adForm = document.querySelector('.ad-form');
 const inputAddress = adForm.querySelector('#address');
@@ -82,7 +83,7 @@ const renderAdvertisementsPin = (advertisements) => {
       .bindPopup(renderCard(advertisement));
   };
 
-  advertisements.forEach((advertisement) => {
+  filterAdvertisements(advertisements).forEach((advertisement) => {
     createMarker(advertisement);
   });
   activateForm('map__filters');
