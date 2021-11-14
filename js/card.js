@@ -21,7 +21,7 @@ const createListFeatures = (cloneTemplate, offerFeatures) => {
   const listFeatures = cloneTemplate.querySelector('.popup__features').querySelectorAll('.popup__feature');
 
   listFeatures.forEach((itemFeature) => {
-    const isExist = offerFeatures.some((feature) => itemFeature.classList.contains(`popup__feature--${feature}`));
+    const isExist = offerFeatures ? offerFeatures.some((feature) => itemFeature.classList.contains(`popup__feature--${feature}`)) : false;
 
     if (!isExist) {
       itemFeature.remove();

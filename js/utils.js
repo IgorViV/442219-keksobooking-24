@@ -1,8 +1,21 @@
+const ALERT_SHOW_TIME = 3000;
 const DefaultSetMap = {
   LAT: 35.6895,
   LNG: 139.692,
   SCALE: 10,
 };
+const SetPinMainMarker = {
+  URL: './img/main-pin.svg',
+  SIZE: [52, 52],
+  PEAK: [26, 52],
+};
+const SetPinOrdinaryMarker = {
+  URL: './img/pin.svg',
+  SIZE: [40, 40],
+  PEAK: [20, 40],
+};
+
+const isEscapeKey = (evt) => evt.key === 'Escape';
 
 /**
  * Возвращает корректную форму множественного числа (только для целых чисел)
@@ -32,4 +45,4 @@ const getNounPlularForm = (currentNumber, oneString, twoString, manyString) => {
   }
 };
 
-export {getNounPlularForm, DefaultSetMap};
+export {ALERT_SHOW_TIME, isEscapeKey, getNounPlularForm, DefaultSetMap, SetPinMainMarker, SetPinOrdinaryMarker};

@@ -1,9 +1,11 @@
-import './utils.js';
-import {deactivateForm} from './form-activating.js';
-import {greateMap} from './map.js';
-import {validateForm} from './form-validation.js';
+import {getData} from './api.js';
+import {loadMap, renderAdvertisementsPin} from './map.js';
+import {showPopupErrorGetData, showPopupErrorSendForm, showPopupSuccessSendForm} from './popup.js';
+import {deactivateForm, setHandleresForm, setSubmitForm} from './form.js';
 
 deactivateForm('map__filters');
 deactivateForm('ad-form');
-greateMap();
-validateForm();
+loadMap();
+getData(renderAdvertisementsPin, showPopupErrorGetData);
+setHandleresForm();
+setSubmitForm(showPopupSuccessSendForm, showPopupErrorSendForm);
