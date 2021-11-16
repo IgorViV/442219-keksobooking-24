@@ -77,5 +77,3 @@ const filterAdvertisements = (advertisements) => advertisements
   .slice(0, MAX_PIN_SHOW);
 
 export {applyFilter, filterAdvertisements};
-
-// TODO 6. Воспользуйтесь приёмом «устранение дребезга», чтобы при переключении фильтра обновление меток, подходящих под фильтры, происходило не чаще, чем один раз в полсекунды.
