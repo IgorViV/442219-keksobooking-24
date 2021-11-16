@@ -28,7 +28,7 @@ const isEscapeKey = (evt) => evt.key === 'Escape';
  * @param {String} manyString Форма множественного числа для остальных чисел
  * @returns {String} Рассчитанная форма множественнго числа
  */
-const getNounPlularForm = (currentNumber, oneString, twoString, manyString) => {
+const getNounPluralForm = (currentNumber, oneString, twoString, manyString) => {
   currentNumber = Number(currentNumber);
   const mod10 = currentNumber % 10;
   const mod100 = currentNumber % 100;
@@ -68,4 +68,4 @@ const debounce = (callback, timeoutDelay = 500) => {
   };
 };
 
-export {ALERT_SHOW_TIME, MAX_PIN_SHOW, MAX_DIGITS, isEscapeKey, getNounPlularForm, DefaultSetMap, SetPinMainMarker, SetPinOrdinaryMarker, debounce};
+export {ALERT_SHOW_TIME, MAX_PIN_SHOW, MAX_DIGITS, isEscapeKey, getNounPluralForm, DefaultSetMap, SetPinMainMarker, SetPinOrdinaryMarker, debounce};

@@ -94,11 +94,17 @@ const resetMarker = () => {
     lng: DefaultSetMap.LNG,
   });
   inputAddress.value = `${DefaultSetMap.LAT}, ${DefaultSetMap.LNG}`;
-  map.closePopup();
+};
+
+const resetMap = () => {
+  map.closePopup().setView({
+    lat: DefaultSetMap.LAT,
+    lng: DefaultSetMap.LNG,
+  }, DefaultSetMap.SCALE);
 };
 
 const clearMarkerGroup = () => {
   markerGroup.clearLayers();
 };
 
-export {loadMap, renderAdvertisementsPin, resetMarker, clearMarkerGroup};
+export {loadMap, renderAdvertisementsPin, resetMarker, resetMap, clearMarkerGroup};

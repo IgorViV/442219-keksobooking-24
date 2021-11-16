@@ -1,4 +1,4 @@
-import {resetMarker, clearMarkerGroup} from './map.js';
+import {resetMap, clearMarkerGroup} from './map.js';
 import {MAX_PIN_SHOW} from './utils.js';
 
 const mapFilters = document.querySelector('.map__filters');
@@ -26,7 +26,7 @@ const priceFilter = {
  */
 const applyFilter = (cb) => {
   const onFilterListener = () => {
-    resetMarker();
+    resetMap();
     clearMarkerGroup();
     cb();
   };
@@ -50,14 +50,13 @@ const compareFilter = (advertisement) => {
   let isPrice = true;
   let isFeatures = true;
 
-  if (checkedFeatures.length && advertisement.offer.features) {
-    const selectedFeatures = Array.from(checkedFeatures).map((input) => input.value);
-    // console.log('SELECT: ', selectedFeatures);
-    // console.log('isFeatures: ', selectedFeatures.every((element) => advertisement.offer.features.includes(element)));
-    isFeatures = selectedFeatures.every((feature) => advertisement.offer.features.includes(feature));
-    // checkedFeatures.forEach((feature) => {
-    // isFeatures = advertisement.offer.features.includes(feature.value);
-    // });
+  if (checkedFeatures.length) {
+    if (!advertisement.offer.features) {
+      isFeatures = false;
+    } else {
+      const selectedFeatures = Array.from(checkedFeatures).map((input) => input.value);
+      isFeatures = selectedFeatures.every((feature) => advertisement.offer.features.includes(feature));
+    }
   }
   filterElements.forEach((filterElement) => {
     if (filterElement.id === 'housing-type' && filterElement.value !== 'any') {
