@@ -88,15 +88,11 @@ const validateRoomNumber = () => {
  * @param {Object} evt Изменяемый select времени
  */
 const changeTime = (evt) => {
-  const selectedTimeIn = timeIn.querySelector('option[selected]');
-  const selectedTimeOut = timeOut.querySelector('option[selected]');
-  if (selectedTimeOut.value !== evt.target.value) {
-    selectedTimeOut.removeAttribute('selected');
-    timeOut.querySelector(`option[value="${evt.target.value}"]`).setAttribute('selected', 'selected');
+  if (evt.target === timeIn) {
+    timeOut.value = evt.target.value;
   }
-  if (selectedTimeIn.value !== evt.target.value) {
-    selectedTimeIn.removeAttribute('selected');
-    timeIn.querySelector(`option[value="${evt.target.value}"]`).setAttribute('selected', 'selected');
+  if (evt.target === timeOut) {
+    timeIn.value = evt.target.value;
   }
 };
 
