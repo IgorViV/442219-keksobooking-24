@@ -1,4 +1,4 @@
-import {DefaultSetMap, SetPinMainMarker, SetPinOrdinaryMarker} from './utils.js';
+import {MAX_DIGITS, DefaultSetMap, SetPinMainMarker, SetPinOrdinaryMarker} from './utils.js';
 import {renderCard} from './card.js';
 import {activateForm} from './form.js';
 import {filterAdvertisements} from './filter.js';
@@ -26,6 +26,7 @@ const ordinaryPinIcon = L.icon({
   iconSize: SetPinOrdinaryMarker.SIZE,
   iconAnchor: SetPinOrdinaryMarker.PEAK,
 });
+const markerGroup = L.layerGroup().addTo(map);
 
 /**
  * Отображает карту
@@ -50,7 +51,7 @@ const loadMap = () => {
   mainPinMarker.addTo(map);
 
   mainPinMarker.on('move', (evt) => {
-    inputAddress.value = `${evt.target.getLatLng().lat.toFixed(5)}, ${evt.target.getLatLng().lng.toFixed(5)}`;
+    inputAddress.value = `${evt.target.getLatLng().lat.toFixed(MAX_DIGITS)}, ${evt.target.getLatLng().lng.toFixed(MAX_DIGITS)}`;
   });
 };
 
@@ -60,8 +61,6 @@ const loadMap = () => {
  * @param {Object} advertisements Данные из объявлений
  */
 const renderAdvertisementsPin = (advertisements) => {
-  const markerGroup = L.layerGroup().addTo(map);
-
   /**
    * Отрисовывает маркер объявления
    *
@@ -98,4 +97,8 @@ const resetMarker = () => {
   map.closePopup();
 };
 
-export {loadMap, renderAdvertisementsPin, resetMarker};
+const clearMarkerGroup = () => {
+  markerGroup.clearLayers();
+};
+
+export {loadMap, renderAdvertisementsPin, resetMarker, clearMarkerGroup};

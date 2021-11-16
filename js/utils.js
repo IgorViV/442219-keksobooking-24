@@ -1,4 +1,6 @@
 const ALERT_SHOW_TIME = 3000;
+const MAX_PIN_SHOW = 10;
+const MAX_DIGITS = 5;
 const DefaultSetMap = {
   LAT: 35.6895,
   LNG: 139.692,
@@ -45,4 +47,4 @@ const getNounPlularForm = (currentNumber, oneString, twoString, manyString) => {
   }
 };
 
-export {ALERT_SHOW_TIME, isEscapeKey, getNounPlularForm, DefaultSetMap, SetPinMainMarker, SetPinOrdinaryMarker};
+export {ALERT_SHOW_TIME, MAX_PIN_SHOW, MAX_DIGITS, isEscapeKey, getNounPlularForm, DefaultSetMap, SetPinMainMarker, SetPinOrdinaryMarker};

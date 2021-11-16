@@ -1,54 +1,81 @@
-import {resetMarker} from './map.js';
-
-const filterRate = {
-  'housting-type': 5,
-  'housting-price': 4,
-  'housting-rooms': 3,
-  'housting-quests': 2,
-  'housting-features': 1,
-  'nothing': 0,
-};
+import {resetMarker, clearMarkerGroup} from './map.js';
+import {MAX_PIN_SHOW} from './utils.js';
 
 const mapFilters = document.querySelector('.map__filters');
+const filterElements = mapFilters.querySelectorAll('.map__filter');
+const mapFeatures = mapFilters.querySelector('.map__features');
 
 /**
- * Вычисляет рейтинг элемента фильтра
+ * Применяет выбранные изменения фильтра
  *
- * @param {Object} filterElement Элемент фильтра
- * @returns {Number} Рейтинг
+ * @param {Function} cb Функция реализуемая при изменении фильтра
  */
-const getRate = (filterElement) => {
-  if (filterElement.value !== 'any') {
-    return filterRate['housting-type'];
-  }
-  return filterRate.nothing;
-};
-
-const changeFilter = (cb) => {
-  mapFilters.addEventListener('change', (evt) => {
+const applyFilter = (cb) => {
+  mapFilters.addEventListener('change', () => {
     resetMarker();
-    console.log('RATE', getRate(evt.target));
-
-    // определить какой элемент фильтра изменен
-    // выбрать рейтинг исходя из выбранного элемента
-    // применить измененный фильтр
+    clearMarkerGroup();
     cb();
   });
 };
 
+/**
+ * Определяет соответствие данных объявления выбранному фильтру
+ *
+ * @param {Object} advertisement Данные объявления
+ * @returns {Boolean} True если данные соответствуют
+ */
+const compareFilter = (advertisement) => {
+  const checkedFeatures = mapFeatures.querySelectorAll('input[name="features"]:checked');
+  const priceFilter = {
+    low: {
+      min: 0,
+      max: 10000,
+    },
+    middle: {
+      min: 10000,
+      max: 50000,
+    },
+    high: {
+      min: 50000,
+      max: 1000001,
+    },
+  };
+  let isType = true;
+  let isRooms = true;
+  let isGuests = true;
+  let isPrice = true;
+  let isFeatures = true;
+
+  if (checkedFeatures.length && advertisement.offer.features) {
+    checkedFeatures.forEach((feature) => {
+      isFeatures = !advertisement.offer.features.some((featureOffer) => featureOffer === feature.value);
+    });
+  }
+  filterElements.forEach((filterElement) => {
+    if (filterElement.id === 'housing-type' && filterElement.value !== 'any') {
+      isType = advertisement.offer.type === filterElement.value;
+    }
+
+    if (filterElement.id === 'housing-price' && filterElement.value !== 'any') {
+      isPrice = advertisement.offer.price >= priceFilter[filterElement.value].min && advertisement.offer.price < priceFilter[filterElement.value].max;
+    }
+
+    if (filterElement.id === 'housing-rooms' && filterElement.value !== 'any') {
+      isRooms = advertisement.offer.rooms.toString() === filterElement.value;
+    }
+
+    if (filterElement.id === 'housing-guests' && filterElement.value !== 'any') {
+      isGuests = advertisement.offer.guests.toString() === filterElement.value;
+    }
+  });
+
+  return isType && isRooms && isGuests && isPrice && isFeatures;
+};
+
 const filterAdvertisements = (advertisements) => advertisements
-  .slice(0, 10);
+  .filter(compareFilter)
+  .slice(0, MAX_PIN_SHOW);
 
-export {changeFilter, filterAdvertisements};
+export {applyFilter, filterAdvertisements};
 
-// + 1. Вывести на карту не более 10 меток. Ограничение по количеству должно происходить сразу после получения данных с сервера.
-
-// 2. Запрограммировать фильтр «Тип жилья». Помните, независимо от того, сколько объявлений соответствует фильтру, на карте не должно отображаться больше 10 меток.
-
-// + 3. При изменении фильтра скрывать открытый балун с объявлением.
-
-// 4. Убедитесь, что фильтр «Тип жилья» работает корректно. Затем продолжайте.
-
-// 5. Доработайте модуль фильтрации, реализовав все виды фильтров. Все выбранные фильтры применяются вместе: один фильтр не отменяет другие, выбранные до него. Например, после выбора типа жилья можно указать диапазон стоимости и удобства, в таком случае на карте должны показываться только те метки, которые удовлетворяют всем фильтрам сразу. Как в изначальном состоянии, так и при изменении фильтров, на карте должно показываться не более 10 меток.
-
-// 6. Воспользуйтесь приёмом «устранение дребезга», чтобы при переключении фильтра обновление меток, подходящих под фильтры, происходило не чаще, чем один раз в полсекунды.
+// TODO 6. Воспользуйтесь приёмом «устранение дребезга», чтобы при переключении фильтра обновление меток, подходящих под фильтры, происходило не чаще, чем один раз в полсекунды.
