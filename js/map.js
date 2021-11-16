@@ -1,6 +1,7 @@
-import {DefaultSetMap, SetPinMainMarker, SetPinOrdinaryMarker} from './utils.js';
+import {MAX_DIGITS, DefaultSetMap, SetPinMainMarker, SetPinOrdinaryMarker} from './utils.js';
 import {renderCard} from './card.js';
 import {activateForm} from './form.js';
+import {filterAdvertisements} from './filter.js';
 
 const adForm = document.querySelector('.ad-form');
 const inputAddress = adForm.querySelector('#address');
@@ -25,6 +26,7 @@ const ordinaryPinIcon = L.icon({
   iconSize: SetPinOrdinaryMarker.SIZE,
   iconAnchor: SetPinOrdinaryMarker.PEAK,
 });
+const markerGroup = L.layerGroup().addTo(map);
 
 /**
  * Отображает карту
@@ -49,7 +51,7 @@ const loadMap = () => {
   mainPinMarker.addTo(map);
 
   mainPinMarker.on('move', (evt) => {
-    inputAddress.value = `${evt.target.getLatLng().lat.toFixed(5)}, ${evt.target.getLatLng().lng.toFixed(5)}`;
+    inputAddress.value = `${evt.target.getLatLng().lat.toFixed(MAX_DIGITS)}, ${evt.target.getLatLng().lng.toFixed(MAX_DIGITS)}`;
   });
 };
 
@@ -59,8 +61,6 @@ const loadMap = () => {
  * @param {Object} advertisements Данные из объявлений
  */
 const renderAdvertisementsPin = (advertisements) => {
-  const markerGroup = L.layerGroup().addTo(map);
-
   /**
    * Отрисовывает маркер объявления
    *
@@ -82,7 +82,7 @@ const renderAdvertisementsPin = (advertisements) => {
       .bindPopup(renderCard(advertisement));
   };
 
-  advertisements.forEach((advertisement) => {
+  filterAdvertisements(advertisements).forEach((advertisement) => {
     createMarker(advertisement);
   });
   activateForm('map__filters');
@@ -94,7 +94,17 @@ const resetMarker = () => {
     lng: DefaultSetMap.LNG,
   });
   inputAddress.value = `${DefaultSetMap.LAT}, ${DefaultSetMap.LNG}`;
-  map.closePopup();
 };
 
-export {loadMap, renderAdvertisementsPin, resetMarker};
+const resetMap = () => {
+  map.closePopup().setView({
+    lat: DefaultSetMap.LAT,
+    lng: DefaultSetMap.LNG,
+  }, DefaultSetMap.SCALE);
+};
+
+const clearMarkerGroup = () => {
+  markerGroup.clearLayers();
+};
+
+export {loadMap, renderAdvertisementsPin, resetMarker, resetMap, clearMarkerGroup};

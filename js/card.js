@@ -1,4 +1,4 @@
-import {getNounPlularForm} from './utils.js';
+import {getNounPluralForm} from './utils.js';
 
 const typeAlias = {
   palace: 'Дворец',
@@ -46,9 +46,9 @@ const renderCard = (data) => {
   card.querySelector('.popup__text--price').textContent = offer.price ? `${offer.price} ₽/ночь` : '';
   card.querySelector('.popup__type').textContent = offer.type ? typeAlias[offer.type] : '';
   if (offer.rooms && offer.guests) {
-    card.querySelector('.popup__text--capacity').textContent = `${offer.rooms} ${getNounPlularForm(offer.rooms, 'комната', 'комнаты', 'комнат')} для ${offer.guests} ${getNounPlularForm(offer.guests, 'гостя', 'гостей', 'гостей')}`;
+    card.querySelector('.popup__text--capacity').textContent = `${offer.rooms} ${getNounPluralForm(offer.rooms, 'комната', 'комнаты', 'комнат')} для ${offer.guests} ${getNounPluralForm(offer.guests, 'гостя', 'гостей', 'гостей')}`;
   } else if (offer.rooms) {
-    card.querySelector('.popup__text--capacity').textContent = `${offer.rooms} ${getNounPlularForm(offer.rooms, 'комната', 'комнаты', 'комнат')}`;
+    card.querySelector('.popup__text--capacity').textContent = `${offer.rooms} ${getNounPluralForm(offer.rooms, 'комната', 'комнаты', 'комнат')}`;
   } else {
     card.querySelector('.popup__text--capacity').textContent = '';
   }

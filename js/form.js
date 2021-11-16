@@ -1,5 +1,5 @@
 import {sendData} from './api.js';
-import {resetMarker} from './map.js';
+import {resetMap, resetMarker} from './map.js';
 
 const minCostRooms = {
   palace: 10000,
@@ -9,16 +9,16 @@ const minCostRooms = {
   hotel: 3000,
 };
 const roomsVsGuest = {
-  '100': ['0'],
-  '1': ['1'],
-  '2': ['1', '2'],
-  '3': ['1', '2', '3'],
+  100: [0],
+  1: [1],
+  2: [1, 2],
+  3: [1, 2, 3],
 };
 const guestsMessage = {
-  '100': 'Для 100 комнат укажите "не для гостей"',
-  '1': 'Для 1 комнаты укажите "для 1 гостя"',
-  '2': 'Для 2 комнат укажите "для 1 гостя" или "для 2 гостей"',
-  '3': 'Для 3 комнат укажите "для 1 гостя", "для 2 гостей" или "для 3 гостей"',
+  100: 'Для 100 комнат укажите «не для гостей»',
+  1: 'Для 1 комнаты укажите «для 1 гостя»',
+  2: 'Для 2 комнат укажите «для 1 гостя» или «для 2 гостей»',
+  3: 'Для 3 комнат укажите «для 1 гостя», «для 2 гостей» или «для 3 гостей»',
 };
 const adForm = document.querySelector('.ad-form');
 const mapFilters = document.querySelector('.map__filters');
@@ -63,7 +63,7 @@ const activateForm = (classForm) => {
  */
 const validateRoomNumber = () => {
   roomNumber.addEventListener('change', (evt) => {
-    if (!roomsVsGuest[evt.target.value].includes(capacity.value)) {
+    if (!roomsVsGuest[evt.target.value].includes(+capacity.value)) {
       evt.target.setCustomValidity(guestsMessage[evt.target.value]);
     } else {
       evt.target.setCustomValidity('');
@@ -72,7 +72,7 @@ const validateRoomNumber = () => {
     evt.target.reportValidity();
   });
   capacity.addEventListener('change', (evt) => {
-    if (!roomsVsGuest[roomNumber.value].includes(evt.target.value)) {
+    if (!roomsVsGuest[roomNumber.value].includes(+evt.target.value)) {
       evt.target.setCustomValidity(guestsMessage[roomNumber.value]);
     } else {
       evt.target.setCustomValidity('');
@@ -88,22 +88,18 @@ const validateRoomNumber = () => {
  * @param {Object} evt Изменяемый select времени
  */
 const changeTime = (evt) => {
-  const selectedTimeIn = timeIn.querySelector('option[selected]');
-  const selectedTimeOut = timeOut.querySelector('option[selected]');
-  if (selectedTimeOut.value !== evt.target.value) {
-    selectedTimeOut.removeAttribute('selected');
-    timeOut.querySelector(`option[value="${evt.target.value}"]`).setAttribute('selected', 'selected');
+  if (evt.target === timeIn) {
+    timeOut.value = evt.target.value;
   }
-  if (selectedTimeIn.value !== evt.target.value) {
-    selectedTimeIn.removeAttribute('selected');
-    timeIn.querySelector(`option[value="${evt.target.value}"]`).setAttribute('selected', 'selected');
+  if (evt.target === timeOut) {
+    timeIn.value = evt.target.value;
   }
 };
 
 /**
  * Устанавливает обработчики полей для валидации формы
  */
-const setHandleresForm = () => {
+const setHandlersForm = () => {
   adForm.addEventListener('input', (evt) => {
     if (evt.target.matches('input[name="title"]')) {
       if (evt.target.validity.tooShort) {
@@ -143,6 +139,8 @@ const setHandleresForm = () => {
  */
 const resetForms = () => {
   adForm.reset();
+  inputPrice.setAttribute('min', minCostRooms.flat);
+  inputPrice.setAttribute('placeholder', minCostRooms.flat);
   mapFilters.reset();
 };
 
@@ -161,6 +159,7 @@ const setSubmitForm = (onSucces, onError) => {
         onSucces();
         resetForms();
         resetMarker();
+        resetMap();
       },
       () => onError(),
       new FormData(evt.target),
@@ -170,9 +169,9 @@ const setSubmitForm = (onSucces, onError) => {
 
 buttonReset.addEventListener('click', (evt) => {
   evt.preventDefault();
-  adForm.reset();
-  mapFilters.reset();
+  resetForms();
   resetMarker();
+  resetMap();
 });
 
-export {deactivateForm, activateForm, setHandleresForm, setSubmitForm};
+export {deactivateForm, activateForm, setHandlersForm, setSubmitForm};
