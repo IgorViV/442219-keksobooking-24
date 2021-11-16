@@ -139,6 +139,8 @@ const setHandleresForm = () => {
  */
 const resetForms = () => {
   adForm.reset();
+  inputPrice.setAttribute('min', minCostRooms.flat);
+  inputPrice.setAttribute('placeholder', minCostRooms.flat);
   mapFilters.reset();
 };
 
@@ -166,8 +168,7 @@ const setSubmitForm = (onSucces, onError) => {
 
 buttonReset.addEventListener('click', (evt) => {
   evt.preventDefault();
-  adForm.reset();
-  mapFilters.reset();
+  resetForms();
   resetMarker();
 });
 

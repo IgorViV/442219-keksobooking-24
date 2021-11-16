@@ -4,6 +4,20 @@ import {MAX_PIN_SHOW} from './utils.js';
 const mapFilters = document.querySelector('.map__filters');
 const filterElements = mapFilters.querySelectorAll('.map__filter');
 const mapFeatures = mapFilters.querySelector('.map__features');
+const priceFilter = {
+  low: {
+    min: 0,
+    max: 10000,
+  },
+  middle: {
+    min: 10000,
+    max: 50000,
+  },
+  high: {
+    min: 50000,
+    max: 1000001,
+  },
+};
 
 /**
  * Применяет выбранные изменения фильтра
@@ -11,11 +25,15 @@ const mapFeatures = mapFilters.querySelector('.map__features');
  * @param {Function} cb Функция реализуемая при изменении фильтра
  */
 const applyFilter = (cb) => {
-  mapFilters.addEventListener('change', () => {
+  const onFilterListener = () => {
     resetMarker();
     clearMarkerGroup();
     cb();
-  });
+  };
+
+  mapFilters.addEventListener('change', onFilterListener);
+
+  mapFilters.addEventListener('reset', onFilterListener);
 };
 
 /**
@@ -26,20 +44,6 @@ const applyFilter = (cb) => {
  */
 const compareFilter = (advertisement) => {
   const checkedFeatures = mapFeatures.querySelectorAll('input[name="features"]:checked');
-  const priceFilter = {
-    low: {
-      min: 0,
-      max: 10000,
-    },
-    middle: {
-      min: 10000,
-      max: 50000,
-    },
-    high: {
-      min: 50000,
-      max: 1000001,
-    },
-  };
   let isType = true;
   let isRooms = true;
   let isGuests = true;
@@ -47,9 +51,13 @@ const compareFilter = (advertisement) => {
   let isFeatures = true;
 
   if (checkedFeatures.length && advertisement.offer.features) {
-    checkedFeatures.forEach((feature) => {
-      isFeatures = !advertisement.offer.features.some((featureOffer) => featureOffer === feature.value);
-    });
+    const selectedFeatures = Array.from(checkedFeatures).map((input) => input.value);
+    // console.log('SELECT: ', selectedFeatures);
+    // console.log('isFeatures: ', selectedFeatures.every((element) => advertisement.offer.features.includes(element)));
+    isFeatures = selectedFeatures.every((feature) => advertisement.offer.features.includes(feature));
+    // checkedFeatures.forEach((feature) => {
+    // isFeatures = advertisement.offer.features.includes(feature.value);
+    // });
   }
   filterElements.forEach((filterElement) => {
     if (filterElement.id === 'housing-type' && filterElement.value !== 'any') {
