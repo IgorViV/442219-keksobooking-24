@@ -79,18 +79,24 @@ const compareFilter = (advertisement) => {
   return isType && isRooms && isGuests && isPrice && isFeatures;
 };
 
-const filterAdvertisements = (advertisements) => advertisements.filter(compareFilter).slice(0, MAX_PIN_SHOW);
+const filterAdvertisements = (advertisements) => {
+  const filteredAdvertisement = new Array();
+  let counterPin = 0;
+  for (let i = 0; i < advertisements.length; i++) {
+    if (!compareFilter(advertisements[i])) {
+      continue;
+    }
+    filteredAdvertisement.push(advertisements[i]);
+    ++counterPin;
+    if (counterPin === MAX_PIN_SHOW) {
+      break;
+    }
+  }
+
+  return filteredAdvertisement;
+};
 
 export {applyFilter, filterAdvertisements};
-
-// TODO Б23. Своевременный выход из цикла: цикл не работает дольше чем нужно.
-// Б24 Количество вызовов циклов минимизировано.
-// Фильтрация работает неоптимально:
-// 1. нет досрочного выхода, если какой-то фильтр не соответствует объявлению
-// 2. нет смысла фильтровать все N объявлений, если нам нужно всего 10
-
-// TODO Д6. Используется единый стиль именования переменных.
-// filterElements / filterElement
 
 // TODO Д24. Для каждого события используется отдельный обработчик.
 // mapFilters.addEventListener('change', onFilterListener);
