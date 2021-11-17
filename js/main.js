@@ -6,11 +6,13 @@ import {deactivateAllForms, setHandlersForm, setSubmitForm} from './form.js';
 import {applyFilter} from './filter.js';
 
 deactivateAllForms();
-loadMap();
-getData((advertisements) => {
-  renderAdvertisementsPin(advertisements);
-  applyFilter(debounce(() => renderAdvertisementsPin(advertisements)));
-},
-showPopupErrorGetData);
+loadMap(() => {
+  getData((advertisements) => {
+    renderAdvertisementsPin(advertisements);
+    applyFilter(debounce(() => renderAdvertisementsPin(advertisements)));
+  },
+  showPopupErrorGetData);
+});
+
 setHandlersForm();
 setSubmitForm(showPopupSuccessSendForm, showPopupErrorSendForm);

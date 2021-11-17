@@ -32,10 +32,11 @@ const markerGroup = L.layerGroup().addTo(map);
 /**
  * Отображает карту
  */
-const loadMap = () => {
+const loadMap = (onLoad) => {
   map.on('load', () => {
     activateForm(adForm);
     inputAddress.value = `${DefaultSetMap.LAT}, ${DefaultSetMap.LNG}`;
+    onLoad();
   })
     .setView({
       lat: DefaultSetMap.LAT,

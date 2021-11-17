@@ -79,9 +79,7 @@ const compareFilter = (advertisement) => {
   return isType && isRooms && isGuests && isPrice && isFeatures;
 };
 
-const filterAdvertisements = (advertisements) => advertisements
-  .filter(compareFilter)
-  .slice(0, MAX_PIN_SHOW);
+const filterAdvertisements = (advertisements) => advertisements.filter(compareFilter).slice(0, MAX_PIN_SHOW);
 
 export {applyFilter, filterAdvertisements};
 

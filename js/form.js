@@ -153,16 +153,16 @@ const resetForms = () => {
 /**
  * Устанвливает обработчик submit для основной формы
  *
- * @param {Function} onSucces Действия при успешной отправке объявления
+ * @param {Function} onSuccess Действия при успешной отправке объявления
  * @param {Function} onError Действия при ошибке отправки объявления
  */
-const setSubmitForm = (onSucces, onError) => {
+const setSubmitForm = (onSuccess, onError) => {
   adForm.addEventListener('submit', (evt) => {
     evt.preventDefault();
 
     sendData(
       () => {
-        onSucces();
+        onSuccess();
         resetForms();
         resetMarker();
         resetMap();
