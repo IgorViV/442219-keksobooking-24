@@ -82,3 +82,9 @@ const showPopupSuccessSendForm = () => {
 };
 
 export {showPopupErrorGetData, showPopupErrorSendForm, showPopupSuccessSendForm};
+
+// TODO Д10. В случае, если одинаковый код повторяется в нескольких модулях, повторяющаяся часть вынесена в отдельный модуль.
+// повторяющийся код в модуле popup: 28-46 и 63-81 строчки
+
+// TODO Д5. Все функции объявлены единообразно.
+// function closePopup можно написать и без хоистинга, лишних переменных и прочего

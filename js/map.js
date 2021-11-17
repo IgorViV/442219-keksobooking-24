@@ -4,6 +4,7 @@ import {activateForm} from './form.js';
 import {filterAdvertisements} from './filter.js';
 
 const adForm = document.querySelector('.ad-form');
+const mapFilters = document.querySelector('.map__filters');
 const inputAddress = adForm.querySelector('#address');
 const map = L.map('map-canvas');
 const mainPinIcon = L.icon({
@@ -31,10 +32,11 @@ const markerGroup = L.layerGroup().addTo(map);
 /**
  * Отображает карту
  */
-const loadMap = () => {
+const loadMap = (onLoad) => {
   map.on('load', () => {
-    activateForm('ad-form');
+    activateForm(adForm);
     inputAddress.value = `${DefaultSetMap.LAT}, ${DefaultSetMap.LNG}`;
+    onLoad();
   })
     .setView({
       lat: DefaultSetMap.LAT,
@@ -85,7 +87,7 @@ const renderAdvertisementsPin = (advertisements) => {
   filterAdvertisements(advertisements).forEach((advertisement) => {
     createMarker(advertisement);
   });
-  activateForm('map__filters');
+  activateForm(mapFilters);
 };
 
 const resetMarker = () => {
