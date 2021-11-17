@@ -181,3 +181,7 @@ buttonReset.addEventListener('click', (evt) => {
 });
 
 export {deactivateAllForms, activateForm, setHandlersForm, setSubmitForm};
+
+// TODO Д13. В проекте не должно быть избыточных проверок.
+// Не уверен, к какому критерию лучше отнести, но пусть будет сюда.
+// Очень большое сомнение вызывает подход со слушателями в форме. Делегация там больше мешает, чем помогает
