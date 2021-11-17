@@ -30,32 +30,38 @@ const timeOut = adForm.querySelector('#timeout');
 const buttonReset = adForm.querySelector('.ad-form__reset');
 
 /**
- * Деактивирует форму
- *
- * @param {String} classForm CSS класс формы
+ * Деактивирует основную форму и форму с фильтрами
  */
-const deactivateForm = (classForm) => {
-  const currentForm = document.querySelector(`.${classForm}`);
-  const fieldsets = currentForm.querySelectorAll('fieldset');
-  currentForm.classList.add(`${classForm}--disabled`);
-  fieldsets.forEach((fieldset) => fieldset.setAttribute('disabled', 'disabled'));
+const deactivateAllForms = () => {
+  const forms = document.querySelectorAll('form');
+  for (const form of forms) {
+    if (form.classList.contains('ad-form')) {
+      form.classList.add('ad-form--disabled');
+    }
+    if (form.classList.contains('map__filters')) {
+      form.classList.add('map__filters--disabled');
+    }
+    for (const elem of form.children) {
+      elem.setAttribute('disabled', 'disabled');
+    }
+  }
 };
 
 /**
  * Активирует форму
  *
- * @param {String} classForm CSS класс формы
+ * @param {Object} form Элемент-форма
  */
-const activateForm = (classForm) => {
-  const currentForm = document.querySelector(`.${classForm}`);
-  const fieldsets = currentForm.querySelectorAll('fieldset');
-  currentForm.classList.remove(`${classForm}--disabled`);
-
-  fieldsets.forEach((fieldset) => {
-    if (fieldset.hasAttribute('disabled')) {
-      fieldset.removeAttribute('disabled');
-    }
-  });
+const activateForm = (form) => {
+  if (form.classList.contains('ad-form--disabled')) {
+    form.classList.remove('ad-form--disabled');
+  }
+  if (form.classList.contains('map__filters--disabled')) {
+    form.classList.remove('map__filters--disabled');
+  }
+  for (const elem of form.children) {
+    elem.removeAttribute('disabled');
+  }
 };
 
 /**
@@ -174,4 +180,4 @@ buttonReset.addEventListener('click', (evt) => {
   resetMap();
 });
 
-export {deactivateForm, activateForm, setHandlersForm, setSubmitForm};
+export {deactivateAllForms, activateForm, setHandlersForm, setSubmitForm};
