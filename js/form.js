@@ -22,7 +22,9 @@ const guestsMessage = {
 };
 const adForm = document.querySelector('.ad-form');
 const mapFilters = document.querySelector('.map__filters');
-const inputPrice = adForm.querySelector('#price');
+const titleAdvertisement = adForm.querySelector('#title');
+const typeHousing = adForm.querySelector('#type');
+const priceHousing = adForm.querySelector('#price');
 const roomNumber = adForm.querySelector('#room_number');
 const capacity = adForm.querySelector('#capacity');
 const timeIn = adForm.querySelector('#timein');
@@ -106,37 +108,40 @@ const changeTime = (evt) => {
  * Устанавливает обработчики полей для валидации формы
  */
 const setHandlersForm = () => {
-  adForm.addEventListener('input', (evt) => {
-    if (evt.target.matches('input[name="title"]')) {
-      if (evt.target.validity.tooShort) {
-        evt.target.setCustomValidity('Длина заголовка должна быть не менее 30-ти символов');
-      } else {
-        evt.target.setCustomValidity('');
-      }
-    }
-    if (evt.target.matches('input[name="price"]')) {
-      if (evt.target.validity.rangeUnderflow) {
-        evt.target.setCustomValidity(`Цена за ночь должна быть не менее ${evt.target.getAttribute('min')}`);
-      } else if (evt.target.validity.rangeOverflow) {
-        evt.target.setCustomValidity(`Цена за ночь должна быть не более ${evt.target.getAttribute('max')}`);
-      } else {
-        evt.target.setCustomValidity('');
-      }
+
+  titleAdvertisement.addEventListener('input', (evt) => {
+    if (evt.target.validity.tooShort) {
+      evt.target.setCustomValidity('Длина заголовка должна быть не менее 30-ти символов');
+    } else {
+      evt.target.setCustomValidity('');
     }
     evt.target.reportValidity();
   });
-  adForm.addEventListener('change', (evt) => {
-    if (evt.target.matches('select[name="type"]')) {
-      inputPrice.setAttribute('min', minCostRooms[evt.target.value]);
-      inputPrice.setAttribute('placeholder', minCostRooms[evt.target.value]);
+
+  priceHousing.addEventListener('input', (evt) => {
+    if (evt.target.validity.rangeUnderflow) {
+      evt.target.setCustomValidity(`Цена за ночь должна быть не менее ${evt.target.getAttribute('min')}`);
+    } else if (evt.target.validity.rangeOverflow) {
+      evt.target.setCustomValidity(`Цена за ночь должна быть не более ${evt.target.getAttribute('max')}`);
+    } else {
+      evt.target.setCustomValidity('');
     }
-    if (evt.target.matches('select[name="timein"]')) {
-      changeTime(evt);
-    }
-    if (evt.target.matches('select[name="timeout"]')) {
-      changeTime(evt);
-    }
+    evt.target.reportValidity();
   });
+
+  typeHousing.addEventListener('change', (evt) => {
+    priceHousing.setAttribute('min', minCostRooms[evt.target.value]);
+    priceHousing.setAttribute('placeholder', minCostRooms[evt.target.value]);
+  });
+
+  timeIn.addEventListener('change', (evt) => {
+    changeTime(evt);
+  });
+
+  timeOut.addEventListener('change', (evt) => {
+    changeTime(evt);
+  });
+
   validateRoomNumber();
 };
 
@@ -145,8 +150,8 @@ const setHandlersForm = () => {
  */
 const resetForms = () => {
   adForm.reset();
-  inputPrice.setAttribute('min', minCostRooms.flat);
-  inputPrice.setAttribute('placeholder', minCostRooms.flat);
+  priceHousing.setAttribute('min', minCostRooms.flat);
+  priceHousing.setAttribute('placeholder', minCostRooms.flat);
   mapFilters.reset();
 };
 
@@ -181,7 +186,3 @@ buttonReset.addEventListener('click', (evt) => {
 });
 
 export {deactivateAllForms, activateForm, setHandlersForm, setSubmitForm};
-
-// TODO Д13. В проекте не должно быть избыточных проверок.
-// Не уверен, к какому критерию лучше отнести, но пусть будет сюда.
-// Очень большое сомнение вызывает подход со слушателями в форме. Делегация там больше мешает, чем помогает
