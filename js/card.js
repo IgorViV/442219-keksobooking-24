@@ -1,4 +1,4 @@
-import {getNounPluralForm} from './utils.js';
+import {DEFAULT_URL_AVATAR, getNounPluralForm} from './utils.js';
 
 const typeAlias = {
   palace: 'Дворец',
@@ -39,8 +39,7 @@ const renderCard = (data) => {
   const card = templateCard.cloneNode(true);
   const {author, offer} = data;
 
-  card.querySelector('.popup__avatar').setAttribute('src', author.avatar ? author.avatar : 'img/avatars/default.png');
-
+  card.querySelector('.popup__avatar').setAttribute('src', author.avatar ? author.avatar : DEFAULT_URL_AVATAR);
   card.querySelector('.popup__title').textContent = offer.title ? offer.title : '';
   card.querySelector('.popup__text--address').textContent = offer.address ? offer.address : '';
   card.querySelector('.popup__text--price').textContent = offer.price ? `${offer.price} ₽/ночь` : '';

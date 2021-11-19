@@ -1,5 +1,6 @@
 import {sendData} from './api.js';
 import {resetMap, resetMarker} from './map.js';
+import {setAvatarListener, setPhotoListener, resetPreview} from './preview.js';
 
 const minCostRooms = {
   palace: 10000,
@@ -143,6 +144,8 @@ const setHandlersForm = () => {
   });
 
   validateRoomNumber();
+  setAvatarListener();
+  setPhotoListener();
 };
 
 /**
@@ -153,6 +156,7 @@ const resetForms = () => {
   priceHousing.setAttribute('min', minCostRooms.flat);
   priceHousing.setAttribute('placeholder', minCostRooms.flat);
   mapFilters.reset();
+  resetPreview();
 };
 
 /**

@@ -13,6 +13,5 @@ loadMap(() => {
   },
   showPopupErrorGetData);
 });
-
 setHandlersForm();
 setSubmitForm(showPopupSuccessSendForm, showPopupErrorSendForm);
