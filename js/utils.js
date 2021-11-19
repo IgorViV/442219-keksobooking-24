@@ -3,7 +3,11 @@ const MAX_PIN_SHOW = 10;
 const MAX_DIGITS = 5;
 const FILE_TYPES = ['jpg', 'jpeg', 'png'];
 const DEFAULT_URL_AVATAR = 'img/avatars/default.png';
-const DEFAULT_URL_AVATAR_PREVIEW = 'img/muffin-grey.svg';
+const AvatarPreview = {
+  URL: 'img/muffin-grey.svg',
+  WIDTH: '70',
+  HEIDHT: '70',
+};
 const DefaultSetMap = {
   LAT: 35.6895,
   LNG: 139.692,
@@ -76,7 +80,7 @@ export {
   MAX_PIN_SHOW, MAX_DIGITS,
   FILE_TYPES,
   DEFAULT_URL_AVATAR,
-  DEFAULT_URL_AVATAR_PREVIEW,
+  AvatarPreview,
   isEscapeKey, getNounPluralForm,
   DefaultSetMap, SetPinMainMarker,
   SetPinOrdinaryMarker,

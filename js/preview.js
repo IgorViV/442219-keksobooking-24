@@ -1,4 +1,4 @@
-import {FILE_TYPES, DEFAULT_URL_AVATAR_PREVIEW} from './utils.js';
+import {FILE_TYPES, AvatarPreview} from './utils.js';
 
 const adForm = document.querySelector('.ad-form');
 const uploadAvatar = adForm.querySelector('.ad-form__field input[type=file]');
@@ -7,7 +7,15 @@ const uploadPhoto = adForm.querySelector('.ad-form__upload input[type=file]');
 const previewPhoto = adForm.querySelector('.ad-form__photo');
 
 const createPreviewImage = (filePreview) => {
-  filePreview.innerHTML = '<img src="" alt="Фото помещения" width="70" height="70">';
+  const imgTemplate = document.querySelector('#card')
+    .content
+    .querySelector('.popup__photo')
+    .cloneNode(true);
+
+  imgTemplate.width = AvatarPreview.WIDTH;
+  imgTemplate.height = AvatarPreview.HEIDHT;
+  filePreview.appendChild(imgTemplate);
+
   return filePreview.querySelector('img');
 };
 
@@ -41,8 +49,8 @@ const setPhotoListener = () => {
 };
 
 const resetPreview = () => {
-  previewPhoto.innerHTML = '';
-  previewAvatar.src = DEFAULT_URL_AVATAR_PREVIEW;
+  previewPhoto.querySelector('img').remove();
+  previewAvatar.src = AvatarPreview.URL;
 };
 
 export {resetPreview, setAvatarListener, setPhotoListener};
