@@ -1,6 +1,13 @@
 const ALERT_SHOW_TIME = 3000;
 const MAX_PIN_SHOW = 10;
 const MAX_DIGITS = 5;
+const FILE_TYPES = ['jpg', 'jpeg', 'png'];
+const DEFAULT_URL_AVATAR = 'img/avatars/default.png';
+const AvatarPreview = {
+  URL: 'img/muffin-grey.svg',
+  WIDTH: '70',
+  HEIDHT: '70',
+};
 const DefaultSetMap = {
   LAT: 35.6895,
   LNG: 139.692,
@@ -68,4 +75,14 @@ const debounce = (callback, timeoutDelay = 500) => {
   };
 };
 
-export {ALERT_SHOW_TIME, MAX_PIN_SHOW, MAX_DIGITS, isEscapeKey, getNounPluralForm, DefaultSetMap, SetPinMainMarker, SetPinOrdinaryMarker, debounce};
+export {
+  ALERT_SHOW_TIME,
+  MAX_PIN_SHOW, MAX_DIGITS,
+  FILE_TYPES,
+  DEFAULT_URL_AVATAR,
+  AvatarPreview,
+  isEscapeKey, getNounPluralForm,
+  DefaultSetMap, SetPinMainMarker,
+  SetPinOrdinaryMarker,
+  debounce
+};
