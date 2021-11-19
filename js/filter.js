@@ -25,15 +25,15 @@ const priceFilter = {
  * @param {Function} cb Функция реализуемая при изменении фильтра
  */
 const applyFilter = (cb) => {
-  const onFilterListener = () => { // TODO Д4. Из названия обработчика события и функции-колбэка следует, что это обработчик.
+  const onFilterChange = () => { // TODO Д4. Из названия обработчика события и функции-колбэка следует, что это обработчик.
     resetMap();                    // onFilterListener - строго говоря, не подходит под критерий
     clearMarkerGroup();
     cb();
   };
 
-  formFilters.addEventListener('change', onFilterListener);
+  formFilters.addEventListener('change', onFilterChange);
 
-  formFilters.addEventListener('reset', onFilterListener);
+  formFilters.addEventListener('reset', onFilterChange);
 };
 
 /**
