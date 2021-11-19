@@ -16,43 +16,48 @@ const showPopupErrorGetData = () => {
 };
 
 /**
- * Выводит сообщение об ошибке при размещении объявления
+ * Добавляет popup сообщения на страницу
+ *
+ * @param {Object} popup Шаблон окна сообщнения
  */
-const showPopupErrorSendForm = () => {
-  const errorPopup = document.querySelector('#error')
-    .content
-    .querySelector('.error')
-    .cloneNode(true);
-  const errorButton = errorPopup.querySelector('.error__button');
-
-  document.body.appendChild(errorPopup);
-
+const appendPopup = (popup) => {
+  const errorButton = popup.querySelector('.error__button');
   const onPopupEscKeydown = (evt) => {
     if (isEscapeKey(evt)) {
       evt.preventDefault();
-      closePopup();
+      popup.remove();
+      document.removeEventListener('keydown', onPopupEscKeydown);
     }
   };
 
-  function closePopup () {
-    errorPopup.remove();
+  const onPopupClick = () => {
+    popup.remove();
     document.removeEventListener('keydown', onPopupEscKeydown);
-  }
+  };
 
-  errorPopup.addEventListener('click', () => {
-    closePopup();
-  });
-
+  document.body.appendChild(popup);
+  popup.addEventListener('click', onPopupClick);
   document.addEventListener('keydown', onPopupEscKeydown);
 
-  errorButton.addEventListener('click', () => {
-    closePopup();
-  });
-
+  if (errorButton) {
+    errorButton.addEventListener('click', onPopupClick);
+  }
 };
 
 /**
- * выводит сообщение об успешном размещении объявления
+ * Выводит сообщение об ошибке при размещении объявления
+ */
+const showPopupErrorSendForm = () => {
+  const errorSendPopup = document.querySelector('#error')
+    .content
+    .querySelector('.error')
+    .cloneNode(true);
+
+  appendPopup(errorSendPopup);
+};
+
+/**
+ * Выводит сообщение об успешном размещении объявления
  */
 const showPopupSuccessSendForm = () => {
   const successPopup = document.querySelector('#success')
@@ -60,31 +65,7 @@ const showPopupSuccessSendForm = () => {
     .querySelector('.success')
     .cloneNode(true);
 
-  document.body.appendChild(successPopup);
-
-  const onPopupEscKeydown = (evt) => {
-    if (isEscapeKey(evt)) {
-      evt.preventDefault();
-      closePopup();
-    }
-  };
-
-  function closePopup () {
-    successPopup.remove();
-    document.removeEventListener('keydown', onPopupEscKeydown);
-  }
-
-  successPopup.addEventListener('click', () => {
-    closePopup();
-  });
-
-  document.addEventListener('keydown', onPopupEscKeydown);
+  appendPopup(successPopup);
 };
 
 export {showPopupErrorGetData, showPopupErrorSendForm, showPopupSuccessSendForm};
-
-// TODO Д10. В случае, если одинаковый код повторяется в нескольких модулях, повторяющаяся часть вынесена в отдельный модуль.
-// повторяющийся код в модуле popup: 28-46 и 63-81 строчки
-
-// TODO Д5. Все функции объявлены единообразно.
-// function closePopup можно написать и без хоистинга, лишних переменных и прочего
